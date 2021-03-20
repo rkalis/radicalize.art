@@ -349,6 +349,14 @@ function App(props) {
               />
             </div> */}
 
+            <Route path="/subgraph">
+            <Subgraph
+              subgraphUri={props.subgraphUri}
+              tx={tx}
+              writeContracts={writeContracts}
+              mainnetProvider={mainnetProvider}
+            />
+          </Route>
 
 
           <Route path="/transfers">
