@@ -48,9 +48,9 @@ contract RadicalManager {
 
     // CONTRUCTOR
 
-    constructor() {
-        radicalToken = new RadicalToken();
-        patronageToken = new PatronageToken();
+    constructor(RadicalToken _radicalToken, PatronageToken _patronageToken) {
+        radicalToken = _radicalToken;
+        patronageToken = _patronageToken;
     }
 
     // VIEW FUNCTIONS
