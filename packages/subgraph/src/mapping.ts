@@ -1,34 +1,74 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts"
-import {
-  YourContract,
-  SetPurpose
-} from "../generated/YourContract/YourContract"
-import { Purpose, Sender } from "../generated/schema"
+import { Minted, PriceChanged } from "../generated/RadicalManager/RadicalManager"
+import { Transfer } from "../generated/RadicalToken/RadicalToken"
+import { User, RadicalToken, PatronageToken } from "../generated/schema"
 
-export function handleSetPurpose(event: SetPurpose): void {
+// Subgraph TODOs:
+// - Track total patronage collected by a token
+// - Track total patronage collected by a user
+// - Track total patronage collected by a user
+// - Track price history
+// - Track total rent accruing
 
-  let senderString = event.params.sender.toHexString()
+export function handleMinted(event: Minted): void {
+  // Create new tokens
+  let tokenId = event.params.tokenId.toHexString()
+  let radicalToken = new RadicalToken(tokenId)
+  let patronageToken = new PatronageToken(tokenId)
 
-  let sender = Sender.load(senderString)
+  // Load an existing user
+  let ownerString = event.params.owner.toHexString()
+  let owner = User.load(ownerString)
 
-  if (sender == null) {
-    sender = new Sender(senderString)
-    sender.address = event.params.sender
-    sender.createdAt = event.block.timestamp
-    sender.purposeCount = BigInt.fromI32(1)
+  // Or create a new one
+  if (!owner) {
+    owner = new User(ownerString)
+    owner.address = event.params.owner
   }
-  else {
-    sender.purposeCount = sender.purposeCount.plus(BigInt.fromI32(1))
-  }
 
-  let purpose = new Purpose(event.transaction.hash.toHex() + "-" + event.logIndex.toString())
+  // Update radical token
+  radicalToken.owner = owner.id
+  radicalToken.createdAt = event.block.timestamp
+  radicalToken.price = event.params.price
+  radicalToken.rate = event.params.rate
+  radicalToken.patronageToken = tokenId
 
-  purpose.purpose = event.params.purpose
-  purpose.sender = senderString
-  purpose.createdAt = event.block.timestamp
-  purpose.transactionHash = event.transaction.hash.toHex()
+  // Update patronage token
+  patronageToken.owner = owner.id
+  patronageToken.createdAt = event.block.timestamp
+  patronageToken.radicalToken = tokenId
 
-  purpose.save()
-  sender.save()
+  // Persist all entities
+  owner.save()
+  radicalToken.save()
+  patronageToken.save()
+}
 
+export function handlePriceChanged(event: PriceChanged): void {
+  // Load token
+  let tokenId = event.params.tokenId.toHexString()
+  let radicalToken = RadicalToken.load(tokenId)
+
+  // Update the price and persist the token
+  radicalToken.price = event.params.newPrice
+  radicalToken.save()
+}
+
+export function handleRadicalTokenTransfer(event: Transfer): void {
+  // Load token
+  let tokenId = event.params.tokenId.toHexString()
+  let radicalToken = RadicalToken.load(tokenId)
+
+  // Update the owner and persist the token
+  radicalToken.owner = event.params.to.toHexString()
+  radicalToken.save()
+}
+
+export function handlePatronageTokenTransfer(event: Transfer): void {
+  // Load token
+  let tokenId = event.params.tokenId.toHexString()
+  let patronageToken = PatronageToken.load(tokenId)
+
+  // Update the owner and persist the token
+  patronageToken.owner = event.params.to.toHexString()
+  patronageToken.save()
 }

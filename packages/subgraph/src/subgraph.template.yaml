@@ -3,23 +3,70 @@ schema:
   file: ./src/schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: YourContract
+    name: RadicalManager
     network: localhost
     source:
-      address: '{{YourContractAddress}}'
-      abi: YourContract
+      address: '{{RadicalManagerAddress}}'
+      abi: RadicalManager
       startBlock: 1
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Purpose
-        - Sender
+        - RadicalToken
+        - PatronageToken
+        - User
       abis:
-        - name: YourContract
-          file: ./abis/YourContract.json
+        - name: RadicalManager
+          file: ./abis/RadicalManager.json
       eventHandlers:
-        - event: SetPurpose(address,string)
-          handler: handleSetPurpose
+        - event: Minted(indexed address,indexed uint256,uint256,uint256)
+          handler: handleMinted
+        - event: PriceChanged(indexed address,indexed uint256,uint256,uint256)
+          handler: handlePriceChanged
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: RadicalToken
+    network: localhost
+    source:
+      address: '{{RadicalTokenAddress}}'
+      abi: RadicalToken
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - RadicalToken
+        - PatronageToken
+        - User
+      abis:
+        - name: RadicalToken
+          file: ./abis/RadicalToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleRadicalTokenTransfer
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: PatronageToken
+    network: localhost
+    source:
+      address: '{{PatronageTokenAddress}}'
+      abi: PatronageToken
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - RadicalToken
+        - PatronageToken
+        - User
+      abis:
+        - name: PatronageToken
+          file: ./abis/PatronageToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handlePatronageTokenTransfer
       file: ./src/mapping.ts
