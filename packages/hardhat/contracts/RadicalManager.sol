@@ -2,6 +2,7 @@
 pragma solidity ^0.7.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "./PatronageToken.sol";
@@ -9,12 +10,15 @@ import "./RadicalToken.sol";
 
 contract RadicalManager {
     using SafeMath for uint256;
+    using Counters for Counters.Counter;
 
     RadicalToken public radicalToken;
     PatronageToken public patronageToken;
 
-    mapping (uint256 => uint256) _depositedRent;
-    mapping (uint256 => uint256) _lastRentSettlement;
+    mapping (uint256 => uint256) private _depositedRent;
+    mapping (uint256 => uint256) private _lastRentSettlement;
+
+    Counters.Counter private _tokenIds;
 
     // EVENTS
 
@@ -92,6 +96,20 @@ contract RadicalManager {
     }
 
     // PUBLIC FUNCTIONS
+
+    function mint(
+        address to,
+        uint256 initialPrice,
+        uint256 rate,
+        string memory patronageURI,
+        string memory radicalURI
+    ) public {
+        _tokenIds.increment();
+        uint256 tokenId = _tokenIds.current();
+
+        radicalToken.mint(to, tokenId, initialPrice, rate, radicalURI);
+        patronageToken.mint(to, tokenId, patronageURI);
+    }
 
     function setPriceOf(uint256 tokenId, uint256 newPrice) public onlyRadicalHolder(tokenId) {
         // Settle using old price first
