@@ -1,0 +1,22 @@
+.title{
+
+font-size: 40px;
+margin: 40px;
+font-family: Verdana, Geneva, Tahoma, sans-serif ;
+font-style: normal;
+font-weight: bold;
+line-height: 50px;
+color: #77A2B7;
+/* identical to box height, or 42% */
+
+/* display: flex; */
+/* align-items: flex-end; */
+letter-spacing: -0.1em;
+
+
+}
+
+.horizontal-line{
+    border: 2px solid #77A2B7;
+
+}

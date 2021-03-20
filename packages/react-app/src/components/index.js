@@ -15,4 +15,14 @@ export { default as Timeline } from "./Timeline";
 export { default as GasGauge } from "./GasGauge";
 export { default as BytesStringInput } from "./BytesStringInput";
 export { default as Swap } from "./Swap";
-export { default as ThemeSwitch } from "./ThemeSwitch";
+export { default as Footer } from "./custom/shared/Footer";
+export { default as Dashboard } from "./custom/Dashboard";
+export { default as Marketplace } from "./custom/Marketplace";
+export { default as PatrionageToken } from "./custom/partials/PatrionageToken";
+export { default as Mint } from "./custom/Mint";
+export { default as PatrionageTokenDetails } from "./custom/partials/PatrionageTokenDetails";
+export { default as RadicalToken } from "./custom/partials/RadicalToken";
+export { default as RadicalTokenDetails } from "./custom/partials/RadicalTokenDetails";
+
+
+

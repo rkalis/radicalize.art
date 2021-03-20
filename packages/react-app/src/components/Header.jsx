@@ -1,16 +1,28 @@
 import React from "react";
-import { PageHeader } from "antd";
+import { PageHeader, Button } from "antd";
 
 // displays a page header
 
 export default function Header() {
   return (
-    <a href="https://github.com/austintgriffith/scaffold-eth" target="_blank" rel="noopener noreferrer">
+
+    <div style={{ backgroundColor:"#FFFAE1" }}>
       <PageHeader
-        title="🏗 scaffold-eth"
-        subTitle="🖼 NFT example"
-        style={{ cursor: "pointer" }}
+        title="radicalize.art"
+        subTitle="GENERATE LIFELONG INCOME BY MINTING AND COLLECTING NFT"
+        style={{ cursor: "default", color:"red" }}
+        extra={[
+          <Button key="3">MARKETPLACE</Button>,
+          <Button key="2">DASHBOARD</Button>,
+          <Button key="2">MINT</Button>,
+          <Button key="1" type="primary">
+            Primary
+          </Button>,
+        ]}
       />
-    </a>
+    </div>
+
+
   );
 }
+

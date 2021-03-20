@@ -1,0 +1,25 @@
+.radical-token {
+    max-width: 300px;
+    max-height: 350px ;
+    min-height: 350px ;
+
+    margin-top: 20px;
+}
+.patrionage-token {
+    max-width: 300px;
+    margin-top: 20px;
+
+    max-height: 350px ;
+    min-height: 350px;
+}
+.card-body-left{
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+.dashboard-radicals{
+
+}
+.dashboard-patrionages{
+
+}
