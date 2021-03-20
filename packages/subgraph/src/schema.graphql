@@ -1,15 +1,22 @@
-type Purpose @entity {
-  id: ID!
-  sender: Sender!
-  purpose: String!
-  createdAt: BigInt!
-  transactionHash: String!
-}
-
-type Sender @entity {
+type User @entity {
   id: ID!
   address: Bytes!
-  purposes: [Purpose!] @derivedFrom(field: "sender")
+  radicalTokens: [RadicalToken!] @derivedFrom(field: "owner")
+  patronageTokens: [PatronageToken!] @derivedFrom(field: "owner")
+}
+
+type PatronageToken @entity {
+  id: ID!
+  owner: User!
   createdAt: BigInt!
-  purposeCount: BigInt!
+  radicalToken: RadicalToken! @derivedFrom(field: "patronageToken")
+}
+
+type RadicalToken @entity {
+  id: ID!
+  owner: User!
+  createdAt: BigInt!
+  price: BigInt!
+  rate: BigInt!
+  patronageToken: PatronageToken!
 }
