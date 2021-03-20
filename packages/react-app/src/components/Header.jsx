@@ -18,7 +18,7 @@ export default function Header() {
             GENERATE LIFELONG INCOME BY MINTING AND COLLECTING NFT
             </span>
         </div>
-        <span className="ant-page-header-heading-extra">
+        <span className="ant-page-header-heading-extra" style={{ paddingRight: "100px" }}>
               <Link to= "/dashboard" className="navbar-brand" style={{ color:"rgba(0, 0, 0, 0.45)" }}  >Dashboard</Link>
               <Link to= "/marketplace" className="navbar-brand" style={{ color:"rgba(0, 0, 0, 0.45)" }} >Marketplace</Link>
               <Link to= "/mint" className="navbar-brand" style={{ color:"rgba(0, 0, 0, 0.45)" }}> Mint</Link>

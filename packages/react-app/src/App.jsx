@@ -449,7 +449,7 @@ function App(props) {
           <Route path="/debugcontracts">
               <Contract
                 name="YourCollectible"
-                signer={userProvider.getSigner()}
+                signer={userProvider?.getSigner()}
                 provider={localProvider}
                 address={address}
                 blockExplorer={blockExplorer}
@@ -461,9 +461,9 @@ function App(props) {
 
       <div style={{ position: "absolute", textAlign: "right", right: 0, top: 0, padding: 15 }}>
          <Account
-          //  address={address}
-          //  localProvider={localProvider}
-          //  userProvider={userProvider}
+           address={address}
+           localProvider={localProvider}
+           userProvider={userProvider}
            mainnetProvider={mainnetProvider}
            price={price}
            web3Modal={web3Modal}
@@ -471,7 +471,7 @@ function App(props) {
            logoutOfWeb3Modal={logoutOfWeb3Modal}
            blockExplorer={blockExplorer}
          />
-         {/* {faucetHint} */}
+         {faucetHint}
       </div>
       <Footer/>
     </div>
