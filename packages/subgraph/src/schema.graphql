@@ -7,6 +7,7 @@ type User @entity {
 
 type PatronageToken @entity {
   id: ID!
+  tokenURI: String!
   owner: User!
   createdAt: BigInt!
   radicalToken: RadicalToken! @derivedFrom(field: "patronageToken")
@@ -14,6 +15,7 @@ type PatronageToken @entity {
 
 type RadicalToken @entity {
   id: ID!
+  tokenURI: String!
   owner: User!
   createdAt: BigInt!
   price: BigInt!

@@ -23,18 +23,18 @@ function Subgraph(props) {
 
   const EXAMPLE_GRAPHQL = `
   {
-    purposes(first: 25, orderBy: createdAt, orderDirection: desc) {
+    users(first: 25) {
       id
-      purpose
-      createdAt
-      sender {
+      radicalTokens {
         id
+        tokenURI
+        price
+        rate
       }
-    }
-    senders {
-      id
-      address
-      purposeCount
+      patronageTokens {
+        id
+        tokenURI
+      }
     }
   }
   `

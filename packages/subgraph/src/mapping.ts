@@ -1,3 +1,4 @@
+import { Address } from "@graphprotocol/graph-ts"
 import { Minted, PriceChanged } from "../generated/RadicalManager/RadicalManager"
 import { Transfer } from "../generated/RadicalToken/RadicalToken"
 import { User, RadicalToken, PatronageToken } from "../generated/schema"
@@ -15,18 +16,11 @@ export function handleMinted(event: Minted): void {
   let radicalToken = new RadicalToken(tokenId)
   let patronageToken = new PatronageToken(tokenId)
 
-  // Load an existing user
-  let ownerString = event.params.owner.toHexString()
-  let owner = User.load(ownerString)
-
-  // Or create a new one
-  if (!owner) {
-    owner = new User(ownerString)
-    owner.address = event.params.owner
-  }
+  let owner = loadOrCreateUser(event.params.owner)
 
   // Update radical token
   radicalToken.owner = owner.id
+  radicalToken.tokenURI = event.params.radicalURI
   radicalToken.createdAt = event.block.timestamp
   radicalToken.price = event.params.price
   radicalToken.rate = event.params.rate
@@ -34,8 +28,8 @@ export function handleMinted(event: Minted): void {
 
   // Update patronage token
   patronageToken.owner = owner.id
+  patronageToken.tokenURI = event.params.patronageURI
   patronageToken.createdAt = event.block.timestamp
-  patronageToken.radicalToken = tokenId
 
   // Persist all entities
   owner.save()
@@ -58,8 +52,13 @@ export function handleRadicalTokenTransfer(event: Transfer): void {
   let tokenId = event.params.tokenId.toHexString()
   let radicalToken = RadicalToken.load(tokenId)
 
+  // If it doesn't exist yet, we're in the minting process
+  if (!radicalToken) return
+
+  let owner = loadOrCreateUser(event.params.to)
+
   // Update the owner and persist the token
-  radicalToken.owner = event.params.to.toHexString()
+  radicalToken.owner = owner.id
   radicalToken.save()
 }
 
@@ -68,7 +67,27 @@ export function handlePatronageTokenTransfer(event: Transfer): void {
   let tokenId = event.params.tokenId.toHexString()
   let patronageToken = PatronageToken.load(tokenId)
 
+  // If it doesn't exist yet, we're in the minting process
+  if (!patronageToken) return
+
+  let owner = loadOrCreateUser(event.params.to)
+
   // Update the owner and persist the token
-  patronageToken.owner = event.params.to.toHexString()
+  patronageToken.owner = owner.id
   patronageToken.save()
+}
+
+
+function loadOrCreateUser(address: Address): User {
+  // Load an existing user
+  let userString = address.toHexString()
+  let user = User.load(userString)
+
+  // Or create a new one
+  if (!user) {
+    user = new User(userString)
+    user.address = address
+  }
+
+  return user as User
 }

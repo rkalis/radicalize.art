@@ -21,7 +21,7 @@ dataSources:
         - name: RadicalManager
           file: ./abis/RadicalManager.json
       eventHandlers:
-        - event: Minted(indexed address,indexed uint256,uint256,uint256)
+        - event: Minted(indexed address,indexed uint256,uint256,uint256,string,string)
           handler: handleMinted
         - event: PriceChanged(indexed address,indexed uint256,uint256,uint256)
           handler: handlePriceChanged

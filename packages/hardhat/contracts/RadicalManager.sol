@@ -22,7 +22,7 @@ contract RadicalManager {
 
     // EVENTS
 
-    event Minted(address indexed owner, uint256 indexed tokenId, uint256 rate, uint256 price);
+    event Minted(address indexed owner, uint256 indexed tokenId, uint256 rate, uint256 price, string patronageURI, string radicalURI);
     event Sold(address indexed from, address indexed to, uint256 indexed tokenId, uint256 price);
     event RentDeposited(address indexed depositor, uint256 indexed tokenId, uint256 amount);
     event RentWithdrawn(address indexed withdrawer, uint256 indexed tokenId, uint256 amount);
@@ -109,6 +109,8 @@ contract RadicalManager {
 
         radicalToken.mint(to, tokenId, initialPrice, rate, radicalURI);
         patronageToken.mint(to, tokenId, patronageURI);
+
+        emit Minted(to, tokenId, rate, initialPrice, patronageURI, radicalURI);
     }
 
     function setPriceOf(uint256 tokenId, uint256 newPrice) public onlyRadicalHolder(tokenId) {
