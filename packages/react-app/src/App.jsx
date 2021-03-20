@@ -267,11 +267,8 @@ function App(props) {
 
   return (
     <div className="App">
-
-      {/* ✏️ Edit the header and change the title to your project name */}
-      <Header />
-      {/* {networkDisplay} */}
       <BrowserRouter>
+      <Header />
 
         {/* <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
@@ -291,24 +288,19 @@ function App(props) {
           </Menu.Item>
         </Menu> */}
 
-        <Route path= "/dashboard" exact >
-            <Dashboard />
-        </Route>
-        <Route path= "/marketplace" exact >
-            <Marketplace />
-        </Route>
-        <Route path= "/mint" exact >
-            <Mint />
-        </Route>
-
-
         <Switch>
           <Route exact path="/">
-
-          <Dashboard />
-
-
-
+             <Dashboard />
+          </Route>
+          <Route path= "/dashboard" exact >
+            <Dashboard />
+          </Route>
+          <Route path= "/marketplace" exact >
+            <Marketplace />
+          </Route>
+          <Route path= "/mint" exact >
+            <Mint />
+          </Route>
             {/* <div style={{ width:640, margin: "auto", marginTop:32, paddingBottom:32 }}>
               <List
                 bordered
@@ -357,7 +349,7 @@ function App(props) {
               />
             </div> */}
 
-          </Route>
+
 
           <Route path="/transfers">
             <div style={{ width:600, margin: "auto", marginTop:32, paddingBottom:32 }}>
@@ -459,17 +451,17 @@ function App(props) {
 
       </BrowserRouter>
 
-      <div style={{ position: "inherit", textAlign: "right", right: 0, top: 0, padding: 10 }}>
+      <div style={{ position: "absolute", textAlign: "right", right: 0, top: 0, padding: 15 }}>
          <Account
           //  address={address}
           //  localProvider={localProvider}
           //  userProvider={userProvider}
-          //  mainnetProvider={mainnetProvider}
-          //  price={price}
+           mainnetProvider={mainnetProvider}
+           price={price}
            web3Modal={web3Modal}
-          //  loadWeb3Modal={loadWeb3Modal}
-          //  logoutOfWeb3Modal={logoutOfWeb3Modal}
-          //  blockExplorer={blockExplorer}
+           loadWeb3Modal={loadWeb3Modal}
+           logoutOfWeb3Modal={logoutOfWeb3Modal}
+           blockExplorer={blockExplorer}
          />
          {/* {faucetHint} */}
       </div>

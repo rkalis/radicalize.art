@@ -22,6 +22,8 @@ export { default as PatrionageToken } from "./custom/partials/PatrionageToken";
 export { default as Mint } from "./custom/Mint";
 export { default as PatrionageTokenDetails } from "./custom/partials/PatrionageTokenDetails";
 export { default as RadicalToken } from "./custom/partials/RadicalToken";
+export { default as RadicalTokenMarket } from "./custom/partials/RadicalTokenMarket";
+export { default as PatrionageTokenMarket } from "./custom/partials/PatrionageTokenMarket";
 export { default as RadicalTokenDetails } from "./custom/partials/RadicalTokenDetails";
 
 

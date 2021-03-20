@@ -20,3 +20,19 @@ letter-spacing: -0.1em;
     border: 2px solid #77A2B7;
 
 }
+
+.form-align{
+    border: 1px solid #ced4da;
+    padding: 10%;
+    margin-top: 10%;
+    /* margin-bottom: 5%; */
+}
+.form-align .title{
+    margin: 0px 0px 10px 0;
+    text-align: left;
+}
+.note{
+    font-size: 10px;
+    font-weight: 500;
+    margin-bottom: 5%;
+}

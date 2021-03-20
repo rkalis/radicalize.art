@@ -20,7 +20,7 @@ export default function Dashboard() {
      <div className="container">
 
 
-        <div className="title" >PATRIONAGE</div>
+        <div className="title" >PATRONAGE</div>
 
         <hr className="horizontal-line"/>
          <div className="row">
