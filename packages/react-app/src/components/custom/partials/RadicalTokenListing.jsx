@@ -35,7 +35,7 @@ export default function RadicalTokenListing({ tokenId, tokenURI, price, rate, ow
 
   const buy = async () => {
     const safePrice = BigNumber.from(price).mul(11).div(10);
-    const totalAmount = price.mul(15).div(10);
+    const totalAmount = BigNumber.from(price).mul(15).div(10);
     await tx(writeContracts.RadicalManager.forceBuy(Number(tokenId), safePrice, { value: totalAmount }))
   }
 

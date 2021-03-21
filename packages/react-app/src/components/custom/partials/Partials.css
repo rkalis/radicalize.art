@@ -3,31 +3,3 @@
     min-height: 250px;
     max-height: 250px;
 }
-.patrionage-token {
-    max-width: 300px;
-    margin-top: 20px;
-
-    max-height: 350px ;
-    min-height: 350px;
-}
-.card-body-left{
-    padding-left: 20px;
-    padding-right: 20px;
-
-}
-.card-img-top{
-    width: 100%;
-    min-height: 145px;
-    max-height: 145px;
-}
-.card-img-bottom{
-    width: 100%;
-    min-height: 145px;
-    max-height: 145px;
-}
-.dashboard-radicals{
-
-}
-.dashboard-patrionages{
-
-}
