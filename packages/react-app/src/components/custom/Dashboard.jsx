@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useUserAddress, useUserProvider } from 'eth-hooks';
+import React from 'react';
 import "./Main.css"
 import RadicalToken from './partials/RadicalToken'
 import PatrionageToken from './partials/PatrionageToken'
@@ -7,40 +6,62 @@ import { useQuery, gql } from '@apollo/client';
 
 
 export default function Dashboard({ address, userProvider }) {
-    console.log(`---------------------------- Dashboard: ${address}`);
-
     const radicals = [];
     const patronages = [];
 
-    // for(let i=0;i<8;i++){
-    //     radicals.push(<RadicalToken/>)
-    // }
-    // for(let i=0;i<8;i++){
-    //     patronages.push(<PatrionageToken/>)
-    // }
+    const query =
+    `
+      {
+        user(id: "${String(address).toLowerCase()}") {
+          id
+          radicalTokens {
+            id
+            tokenURI
+            price
+            rate
+          }
+          patronageTokens {
+            id
+            tokenURI
+          }
+        }
+      }
+    `;
+
+    const graphQuery = gql(query)
+    const result = useQuery(graphQuery, { pollInterval: 2500 })
+    const { user } = result.data || {}
+
+    if (user) {
+        for (const radical of user.radicalTokens) {
+            radicals.push(<RadicalToken
+                tokenId={radical.id}
+                tokenURI={radical.tokenURI}
+                price={radical.price}
+                rate={radical.rate}
+            />)
+        }
+
+        for (const patronage of user.patronageTokens) {
+            patronages.push(<PatrionageToken />)
+        }
+    }
 
     return (
+        <div className="container">
+            <div className="title" >PATRONAGE</div>
+            <hr className="horizontal-line"/>
 
-     <div className="container">
-
-
-        <div className="title" >PATRONAGE</div>
-
-        <hr className="horizontal-line"/>
-         <div className="row">
-
+            <div className="row">
             {patronages}
+            </div>
 
-         </div>
-        <div className="title">RADICAL</div>
-        <hr className="horizontal-line" />
-        <div className="row">
-            {radicals}
+            <div className="title">RADICAL</div>
+            <hr className="horizontal-line" />
 
-      </div>
-     </div>
-
-
-      );
-
-    }
+            <div className="row">
+                {radicals}
+            </div>
+        </div>
+    );
+}
