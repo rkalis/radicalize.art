@@ -7,14 +7,14 @@ const R = require("ramda");
 const ipfsAPI = require('ipfs-http-client');
 const ipfs = ipfsAPI({host: 'ipfs.infura.io', port: '5001', protocol: 'https' })
 
-const delayMS = 10 //sometimes xDAI needs a 6000ms break lol 😅
+const delayMS = 10 //sometimes xDAI needs a 6000ms break
+
+const toAddress = "0xD75b0609ed51307E13bae0F9394b5f63A7f8b6A1"
 
 const main = async () => {
 
-  // ADDRESS TO MINT TO:
-  const toAddress = "0xD75b0609ed51307E13bae0F9394b5f63A7f8b6A1"
 
-  console.log("\n\n 🎫 Minting to "+toAddress+"...\n");
+  console.log("\n\n 🎫 Minting to " + toAddress + "...\n");
 
   const radicalManager = await ethers.getContractAt('RadicalManager', fs.readFileSync("./artifacts/RadicalManager.address").toString())
 
@@ -45,8 +45,8 @@ const main = async () => {
   const i1r = await ipfs.add(JSON.stringify(item1))
   console.log("Uploading item1 patronage...")
   const i1p = await ipfs.add(JSON.stringify(item1p))
-  console.log("`Minting item1");
-  await radicalManager.mint(toAddress, utils.parseEther(3), 50, i1p.path, i1r.path, { gasLimit:4000000 })
+  console.log("Minting item1");
+  await radicalManager.mint(toAddress, utils.parseEther("3"), 50, i1p.path, i1r.path, { gasLimit:4000000 })
 
 
   await sleep(delayMS)
@@ -76,8 +76,8 @@ const main = async () => {
   const i2r = await ipfs.add(JSON.stringify(item2))
   console.log("Uploading item2 patronage...")
   const i2p = await ipfs.add(JSON.stringify(item2p))
-  console.log("`Minting item2");
-  await radicalManager.mint(toAddress, utils.parseEther(2), 100, i2p.path, i2r.path, { gasLimit:4000000 })
+  console.log("Minting item2");
+  await radicalManager.mint(toAddress, utils.parseEther("2"), 100, i2p.path, i2r.path, { gasLimit:4000000 })
   
 
   await sleep(delayMS)
@@ -107,181 +107,40 @@ const main = async () => {
   const i3r = await ipfs.add(JSON.stringify(item3))
   console.log("Uploading item3 patronage...")
   const i3p = await ipfs.add(JSON.stringify(item2p))
-  console.log("`Minting item2");
-  await radicalManager.mint(toAddress, utils.parseEther(1), 200, i3p.path, i3r.path, { gasLimit:4000000 })
-
-
-  // const rhino = {
-  //   "description": "What a horn!",
-  //   "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-  //   "image": "https://austingriffith.com/images/paintings/rhino.jpg",
-  //   "name": "Rhino",
-  //   "attributes": [
-  //      {
-  //        "trait_type": "BackgroundColor",
-  //        "value": "pink"
-  //      },
-  //      {
-  //        "trait_type": "Eyes",
-  //        "value": "googly"
-  //      },
-  //      {
-  //        "trait_type": "Stamina",
-  //        "value": 22
-  //      }
-  //   ]
-  // }
-  // console.log("Uploading rhino...")
-  // const uploadedrhino = await ipfs.add(JSON.stringify(rhino))
-
-  // console.log("Minting rhino with IPFS hash ("+uploadedrhino.path+")")
-  // await radicalManager.mint(toAddress,uploadedrhino.path,{gasLimit:400000})
+  console.log("Minting item2");
+  await radicalManager.mint(toAddress, utils.parseEther("1"), 200, i3p.path, i3r.path, { gasLimit:4000000 })
 
 
 
-  // await sleep(delayMS)
-
-
-  // const fish = {
-  //   "description": "Is that an underbyte?",
-  //   "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-  //   "image": "https://austingriffith.com/images/paintings/fish.jpg",
-  //   "name": "Fish",
-  //   "attributes": [
-  //      {
-  //        "trait_type": "BackgroundColor",
-  //        "value": "blue"
-  //      },
-  //      {
-  //        "trait_type": "Eyes",
-  //        "value": "googly"
-  //      },
-  //      {
-  //        "trait_type": "Stamina",
-  //        "value": 15
-  //      }
-  //   ]
-  // }
-  // console.log("Uploading fish...")
-  // const uploadedfish = await ipfs.add(JSON.stringify(fish))
-
-  // console.log("Minting fish with IPFS hash ("+uploadedfish.path+")")
-  // await radicalManager.mint(toAddress,uploadedfish.path,{gasLimit:400000})
-
-
-
-  // await sleep(delayMS)
-
-
-  // const flamingo = {
-  //   "description": "So delicate.",
-  //   "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-  //   "image": "https://austingriffith.com/images/paintings/flamingo.jpg",
-  //   "name": "Flamingo",
-  //   "attributes": [
-  //      {
-  //        "trait_type": "BackgroundColor",
-  //        "value": "black"
-  //      },
-  //      {
-  //        "trait_type": "Eyes",
-  //        "value": "googly"
-  //      },
-  //      {
-  //        "trait_type": "Stamina",
-  //        "value": 6
-  //      }
-  //   ]
-  // }
-  // console.log("Uploading flamingo...")
-  // const uploadedflamingo = await ipfs.add(JSON.stringify(flamingo))
-
-  // console.log("Minting flamingo with IPFS hash ("+uploadedflamingo.path+")")
-  // await radicalManager.mint(toAddress,uploadedflamingo.path,{gasLimit:400000})
-
-
-
-
-
-  // const godzilla = {
-  //   "description": "Raaaar!",
-  //   "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-  //   "image": "https://austingriffith.com/images/paintings/godzilla.jpg",
-  //   "name": "Godzilla",
-  //   "attributes": [
-  //      {
-  //        "trait_type": "BackgroundColor",
-  //        "value": "orange"
-  //      },
-  //      {
-  //        "trait_type": "Eyes",
-  //        "value": "googly"
-  //      },
-  //      {
-  //        "trait_type": "Stamina",
-  //        "value": 99
-  //      }
-  //   ]
-  // }
-  // console.log("Uploading godzilla...")
-  // const uploadedgodzilla = await ipfs.add(JSON.stringify(godzilla))
-
-  // console.log("Minting godzilla with IPFS hash ("+uploadedgodzilla.path+")")
-  // await radicalManager.mint(toAddress,uploadedgodzilla.path,{gasLimit:400000})
-
-
-
-
-  // await sleep(delayMS)
-
-  // console.log("Transferring Ownership of RadicalManager to "+toAddress+"...")
-
-  // await radicalManager.transferOwnership(toAddress)
-
-  // await sleep(delayMS)
-
-  /*
-
-
-  console.log("Minting zebra...")
-  await radicalManager.mint("0xD75b0609ed51307E13bae0F9394b5f63A7f8b6A1","zebra.jpg")
-
-  */
-
-
-  //const secondContract = await deploy("SecondContract")
-
-  // const exampleToken = await deploy("ExampleToken")
-  // const examplePriceOracle = await deploy("ExamplePriceOracle")
-  // const smartContractWallet = await deploy("SmartContractWallet",[exampleToken.address,examplePriceOracle.address])
-
-
-
-  /*
-  //If you want to send value to an address from the deployer
-  const deployerWallet = ethers.provider.getSigner()
-  await deployerWallet.sendTransaction({
-    to: "0x34aA3F359A9D614239015126635CE7732c18fDF3",
-    value: ethers.utils.parseEther("0.001")
-  })
-  */
-
-
-  /*
-  //If you want to send some ETH to a contract on deploy (make your constructor payable!)
-  const yourContract = await deploy("YourContract", [], {
-  value: ethers.utils.parseEther("0.05")
-  });
-  */
-
-
-  /*
-  //If you want to link a library into your contract:
-  // reference: https://github.com/austintgriffith/scaffold-eth/blob/using-libraries-example/packages/hardhat/scripts/deploy.js#L19
-  const yourContract = await deploy("YourContract", [], {}, {
-   LibraryName: **LibraryAddress**
-  });
-  */
+  await sleep(delayMS)
+  const item4 = {
+    "name": "Suspended",
+    "description": "Suspended (always for sale, 30% patronage)",
+    "external_url": "https://moncur.ch/",
+    "image": "https://images.squarespace-cdn.com/content/v1/575fa285e321408871d8ed19/1594708462937-P8C1SJ1SUPFBCRU0NLHB/ke17ZwdGBToddI8pDm48kMtiXMEMZ8ID8MVhA-T_Qc9Zw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZamWLI2zvYWH8K3-s_4yszcp2ryTI0HqTOaaUohrI8PIfy9uRsqnknGrsPwiW8VdnsJxMq6FvgYbxptNsO-6IOIKMshLAGzx4R3EDFOm1kBS/Moncur_Suspended_1400x1400.jpg?format=2500w",
+    "attributes": [
+       {
+         "trait_type": "artist",
+         "value": "Moncur"
+       }
+    ]
+  };
+  const item4p = {
+    "name": "30% Patronage on Suspended",
+    "description": "Pay to the bearer on demand 30%.",
+    "attributes": [
+       {
+         "trait_type": "Patronage Rate",
+         "value": "30%"
+       }
+    ]
+  }
+  console.log("Uploading item4 radical ..")
+  const i4r = await ipfs.add(JSON.stringify(item4))
+  console.log("Uploading item4 patronage...")
+  const i4p = await ipfs.add(JSON.stringify(item2p))
+  console.log("Minting item2");
+  await radicalManager.mint(toAddress, utils.parseEther("0.5"), 300, i4p.path, i4r.path, { gasLimit:4000000 })
 
 };
 
