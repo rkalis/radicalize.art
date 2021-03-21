@@ -1,9 +1,7 @@
-.radical-token {
-    max-width: 300px;
-    max-height: 350px ;
-    min-height: 350px ;
-
-    margin-top: 20px;
+.card-img-top, .card-img-bottom {
+    object-fit: cover;
+    min-height: 250px;
+    max-height: 250px;
 }
 .patrionage-token {
     max-width: 300px;

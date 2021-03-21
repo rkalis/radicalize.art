@@ -9,6 +9,7 @@ type PatronageToken @entity {
   id: ID!
   tokenURI: String!
   owner: User!
+  totalPatronageCollected: BigInt!
   createdAt: BigInt!
   radicalToken: RadicalToken! @derivedFrom(field: "patronageToken")
 }
