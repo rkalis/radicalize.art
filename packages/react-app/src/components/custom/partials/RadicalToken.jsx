@@ -15,12 +15,13 @@ export default function RadicalToken({ tokenId, tokenURI, price, rate }) {
                 <div class="card-body">
                     <div>
                         {/* <span className="card-body-left">Patronage due date</span> */}
-                        <span className="card-body-right">Patronage/year: {annualPatronage} Ξ</span>
+                        <div className="card-body-right">Patronage/year: {annualPatronage} Ξ</div>
                     </div>
 
                     <div>
                         {/* <span className="card-body-left">14/12/2021</span> */}
-                        <span className="card-body-right">Price: {price} Ξ</span>
+                        <div className="card-body-right">Price: {price} Ξ</div>
+                        <div className="card-body-right">Foreclosure date: xxxx-xx-xx</div>
                     </div>
                 </div>
                 <img src="assets/img/testimage.png" className="card-img-bottom" alt="..."/>

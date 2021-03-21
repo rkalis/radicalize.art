@@ -23,6 +23,10 @@ export default function Dashboard({ address, userProvider }) {
           patronageTokens {
             id
             tokenURI
+            radicalToken {
+                price
+                rate
+            }
           }
         }
       }
@@ -43,7 +47,12 @@ export default function Dashboard({ address, userProvider }) {
         }
 
         for (const patronage of user.patronageTokens) {
-            patronages.push(<PatrionageToken />)
+            patronages.push(<PatrionageToken
+                tokenId={patronage.id}
+                tokenURI={patronage.tokenURI}
+                price={patronage.radicalToken.price}
+                rate={patronage.radicalToken.rate}
+            />)
         }
     }
 
