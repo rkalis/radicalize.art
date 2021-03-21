@@ -15,10 +15,16 @@ letter-spacing: -0.1em;
 
 
 }
+.no-address{
+    min-height: 465px;
+}
 
 .horizontal-line{
     border: 2px solid #77A2B7;
 
+}
+.page{
+    min-height: 525px;
 }
 
 .form-align{

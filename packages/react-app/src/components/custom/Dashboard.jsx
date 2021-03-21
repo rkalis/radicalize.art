@@ -64,7 +64,7 @@ export default function Dashboard({ address, userProvider }) {
 
   if (!address) {
     return (
-      <div className="container">
+      <div className="container no-address">
         <h1 style={{ marginTop: "100px" }}>
           Please connect your Metamask wallet
         </h1>
@@ -73,7 +73,7 @@ export default function Dashboard({ address, userProvider }) {
   }
 
   return (
-    <div className="container">
+    <div className="container page">
       <div className="title">PATRONAGE</div>
       <hr className="horizontal-line" />
 
