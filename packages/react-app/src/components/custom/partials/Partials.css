@@ -17,6 +17,16 @@
     padding-right: 20px;
 
 }
+.card-img-top{
+    width: 100%;
+    min-height: 145px;
+    max-height: 145px;
+}
+.card-img-bottom{
+    width: 100%;
+    min-height: 145px;
+    max-height: 145px;
+}
 .dashboard-radicals{
 
 }
