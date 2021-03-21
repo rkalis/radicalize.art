@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import "./Main.css"
+import mint from '../../helpers/minter';
+const ipfsAPI = require('ipfs-http-client');
+
+const ipfs = ipfsAPI({host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
+
+
 
 export default function Mint() {
 
   const initialFormData = Object.freeze({
-    file: "",
-    name: "",
-    description: "",
-    newPrice: "",
-    patronageRate: "",
+    name: "Chimp",
+    description: "Chimp",
+    file: "https://images.squarespace-cdn.com/content/v1/575fa285e321408871d8ed19/1594709938301-QHU9O68TY77LR2F00FGV/ke17ZwdGBToddI8pDm48kE2GkdnIr5SO-CACT9XyGZlZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVGVc7K5CECqctQZfnE8sPkLF_B0_4y0xtJXb2emPG5POEtYYWjJQ7oNp_jeQjbXLko/Chimp1_moncur_0.7mx1m.jpg?format=2500w",
+    patronageRate: "50",
+    newPrice: "0.25",
     checked: false
   })
 
@@ -24,10 +30,57 @@ export default function Mint() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(formData);
+    await mintFromFormOutput(formData);
   };
+
+
+  async function mintFromFormOutput({ 
+    name, 
+    description, 
+    file, 
+    image, 
+    artist, 
+    patronageRate, 
+    newPrice,
+    address }) {
+
+    const radicalToken = {
+        name,
+        description: `${name} (always for sale, ${patronageRate}% patronage)`,
+        external_url: file,
+        image,
+        attributes: [
+            {
+                trait_type: "artist",
+                value: artist
+            }
+        ]
+    };
+
+    const patronageToken = {
+        name: `${patronageRate}% patronage on ${name}`,
+        description: `Pay to the bearer on demand ${patronageRate}%`,
+        external_url: file,
+        image,
+        attributes: [
+            {
+                trait_type: "Patronage Rate",
+                value: patronageRate
+            }
+        ]
+    };
+
+    console.log("Uploading radical ..")
+    console.log("Uploading patronage...")
+    const r = await ipfs.add(JSON.stringify(radicalToken))
+    const p = await ipfs.add(JSON.stringify(patronageToken))
+    console.log(r, p);
+    //await radicalManager.mint(toAddress, utils.parseEther(newPrice), parseInt(patronageRate), i5p.path, i5r.path, { gasLimit:4000000 })
+}
+
 
     return (
 
