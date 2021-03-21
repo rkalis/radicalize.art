@@ -1,5 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import React from "react";
+import CardDeck from "react-bootstrap/CardDeck";
+import CardGroup from "react-bootstrap/CardGroup";
 import "./Main.css";
 import RadicalToken from "./partials/RadicalToken";
 import PatronageToken from "./partials/PatrionageToken";
@@ -65,12 +67,12 @@ export default function Dashboard({ address, userProvider }) {
       <div className="title">PATRONAGE</div>
       <hr className="horizontal-line" />
 
-      <div className="row">{patronages}</div>
+      <CardGroup>{patronages}</CardGroup>
 
       <div className="title">RADICAL</div>
       <hr className="horizontal-line" />
 
-      <div className="row">{radicals}</div>
+      <CardGroup>{radicals}</CardGroup>
     </div>
   );
 }
