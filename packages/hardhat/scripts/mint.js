@@ -19,55 +19,66 @@ const main = async () => {
   const radicalManager = await ethers.getContractAt('RadicalManager', fs.readFileSync("./artifacts/RadicalManager.address").toString())
 
 
-  const buffaloRadical = {
-    "description": "This Buffalo is always for sale.",
-    "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-    "image": "https://austingriffith.com/images/paintings/buffalo.jpg",
-    "name": "Buffalo",
+  const item1 = {
+    "name": "The Glassmakers Muse",
+    "description": "The Glassmakers Muse (always for sale, 5% patronage)",
+    "external_url": "https://moncur.ch/",
+    "image": "https://images.squarespace-cdn.com/content/v1/575fa285e321408871d8ed19/1566204913834-DK30Q6JN7EOZ16W4XOTD/ke17ZwdGBToddI8pDm48kMlKPs01Yyk3gRbEhpRXPJEUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYxCRW4BPu10St3TBAUQYVKc1zcjBzHC3OSERMj2jxBIFNl7r81kL8gT3dQF0e1kxZus2hq1yT6MeFIKjdSTZVvk/Moncur+-+The+Glassmakers+Muse+-+140x140cm+acrylic.jpg?format=2500w",
     "attributes": [
        {
-         "trait_type": "BackgroundColor",
-         "value": "green"
-       },
-       {
-         "trait_type": "Eyes",
-         "value": "googly"
-       },
-       {
-         "trait_type": "Stamina",
-         "value": 42
+         "trait_type": "artist",
+         "value": "Moncur"
        }
     ]
-  }
-  console.log("Uploading buffalo radical ..")
-  const uploadedRadical = await ipfs.add(JSON.stringify(buffaloRadical))
-
-  const buffaloPatronage = {
-    "description": "Pay to the bearer on demand 5% of the value of Buffalo.",
-    "name": "Buffalo Patronage",
+  };
+  const item1p = {
+    "name": "5% Patronage on The Glassmakers Muse",
+    "description": "Pay to the bearer on demand 5%.",
     "attributes": [
        {
          "trait_type": "Patronage Rate",
          "value": "5%"
-       },
-       {
-         "trait_type": "Radical token URI",
-         "value": ""
        }
     ]
   }
+  console.log("Uploading item1 radical ..")
+  const i1r = await ipfs.add(JSON.stringify(item1))
+  console.log("Uploading item1 patronage...")
+  const i1p = await ipfs.add(JSON.stringify(item1p))
+  console.log("`Minting item1");
+  await radicalManager.mint(toAddress, 1, 50, i1p.path, i1r.path, { gasLimit:4000000 })
 
-  console.log("Uploading buffalo patronage...")
-  const uploadedPatronage = await ipfs.add(JSON.stringify(buffaloPatronage))
-
-  const price = 1;
-  const rate = 100;
-
-  console.log(`Minting buffalo with IPFS hashes ${uploadedPatronage.path} and ${uploadedRadical.path}`);
-  await radicalManager.mint(toAddress, price, rate, uploadedPatronage.path, uploadedRadical.path, { gasLimit:4000000 })
 
   await sleep(delayMS)
-
+  const item2 = {
+    "name": "Glitterati",
+    "description": "Glitterati (always for sale, 10% patronage)",
+    "external_url": "https://moncur.ch/",
+    "image": "https://images.squarespace-cdn.com/content/v1/575fa285e321408871d8ed19/1594712586277-Z1QRKOEJS3XRVDI87ZLJ/ke17ZwdGBToddI8pDm48kKB_fR79n880xOS-N5lKc8VZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpxpEURhgSBEh9ILe0HKIG3COQlfzgXmXcH-iBsIE3okqFssv15w4XRMsOjQQp_CJx4/IMG_20200225_222147.jpg?format=2500w",
+    "attributes": [
+       {
+         "trait_type": "artist",
+         "value": "Moncur"
+       }
+    ]
+  };
+  const item2p = {
+    "name": "5% Patronage on Glitterati",
+    "description": "Pay to the bearer on demand 5%.",
+    "attributes": [
+       {
+         "trait_type": "Patronage Rate",
+         "value": "10%"
+       }
+    ]
+  }
+  console.log("Uploading item2 radical ..")
+  const i2r = await ipfs.add(JSON.stringify(item2))
+  console.log("Uploading item2 patronage...")
+  const i2p = await ipfs.add(JSON.stringify(item2p))
+  console.log("`Minting item2");
+  await radicalManager.mint(toAddress, 1, 100, i2p.path, i2r.path, { gasLimit:4000000 })
+  
 
   // const zebra = {
   //   "description": "What is it so worried about?",
