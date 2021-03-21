@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+import { utils } from "ethers"
 import "./Main.css"
-import mint from '../../helpers/minter';
+import { useContractLoader } from '../../hooks';
+import { Transactor } from '../../helpers';
 const ipfsAPI = require('ipfs-http-client');
 
 const ipfs = ipfsAPI({host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 
 
 
-export default function Mint() {
+export default function Mint({ address, userProvider }) {
+  const writeContracts = useContractLoader(userProvider)
+  const tx = Transactor(userProvider)
 
   const initialFormData = Object.freeze({
     name: "Chimp",
@@ -37,40 +41,38 @@ export default function Mint() {
   };
 
 
-  async function mintFromFormOutput({ 
-    name, 
-    description, 
-    file, 
-    image, 
-    artist, 
-    patronageRate, 
-    newPrice,
-    address }) {
+  const mintFromFormOutput = async (data) => {
+    const {
+      name,
+      description,
+      image,
+      artist,
+      patronageRate,
+      newPrice,
+    } = data;
 
     const radicalToken = {
-        name,
-        description: `${name} (always for sale, ${patronageRate}% patronage)`,
-        external_url: file,
-        image,
-        attributes: [
-            {
-                trait_type: "artist",
-                value: artist
-            }
-        ]
+      name,
+      description,
+      image,
+      attributes: [
+        {
+          trait_type: "artist",
+          value: artist
+        }
+      ]
     };
 
     const patronageToken = {
-        name: `${patronageRate}% patronage on ${name}`,
-        description: `Pay to the bearer on demand ${patronageRate}%`,
-        external_url: file,
-        image,
-        attributes: [
-            {
-                trait_type: "Patronage Rate",
-                value: patronageRate
-            }
-        ]
+      name: `${patronageRate}% patronage on ${name}`,
+      description: `Pay to the bearer on demand ${patronageRate}%`,
+      image,
+      attributes: [
+        {
+          trait_type: "Patronage Rate",
+          value: patronageRate
+        }
+      ]
     };
 
     console.log("Uploading radical ..")
@@ -78,8 +80,9 @@ export default function Mint() {
     const r = await ipfs.add(JSON.stringify(radicalToken))
     const p = await ipfs.add(JSON.stringify(patronageToken))
     console.log(r, p);
-    //await radicalManager.mint(toAddress, utils.parseEther(newPrice), parseInt(patronageRate), i5p.path, i5r.path, { gasLimit:4000000 })
-}
+
+    await tx(writeContracts.RadicalManager.mint(address, utils.parseEther(newPrice), parseInt(patronageRate), p.path, r.path))
+  }
 
 
     return (
@@ -93,8 +96,9 @@ export default function Mint() {
         <div className="title" >MINT</div>
         <hr/>
 
-          <div className="form-group">
-            <input type="file" className="form-control-file" id="file" name="file" required onChange={handleChange}/>
+        <div class="form-group">
+              <input type="string" className="form-control" id="image" name="image" rows="2" placeholder="Add your image URL..." required onChange={handleChange}>
+              </input>
           </div>
 
           <div class="form-group">
