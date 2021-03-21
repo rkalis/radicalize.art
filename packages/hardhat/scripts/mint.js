@@ -2,7 +2,7 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const { config, ethers } = require("hardhat");
-const { utils } = require("ethers");
+const { utils, constants } = require("ethers");
 const R = require("ramda");
 const ipfsAPI = require('ipfs-http-client');
 const ipfs = ipfsAPI({host: 'ipfs.infura.io', port: '5001', protocol: 'https' })
@@ -46,7 +46,7 @@ const main = async () => {
   console.log("Uploading item1 patronage...")
   const i1p = await ipfs.add(JSON.stringify(item1p))
   console.log("`Minting item1");
-  await radicalManager.mint(toAddress, 1, 50, i1p.path, i1r.path, { gasLimit:4000000 })
+  await radicalManager.mint(toAddress, utils.parseEther(3), 50, i1p.path, i1r.path, { gasLimit:4000000 })
 
 
   await sleep(delayMS)
@@ -63,8 +63,8 @@ const main = async () => {
     ]
   };
   const item2p = {
-    "name": "5% Patronage on Glitterati",
-    "description": "Pay to the bearer on demand 5%.",
+    "name": "10% Patronage on Glitterati",
+    "description": "Pay to the bearer on demand 10%.",
     "attributes": [
        {
          "trait_type": "Patronage Rate",
@@ -77,38 +77,38 @@ const main = async () => {
   console.log("Uploading item2 patronage...")
   const i2p = await ipfs.add(JSON.stringify(item2p))
   console.log("`Minting item2");
-  await radicalManager.mint(toAddress, 1, 100, i2p.path, i2r.path, { gasLimit:4000000 })
+  await radicalManager.mint(toAddress, utils.parseEther(2), 100, i2p.path, i2r.path, { gasLimit:4000000 })
   
 
-  // const zebra = {
-  //   "description": "What is it so worried about?",
-  //   "external_url": "https://austingriffith.com/portfolio/paintings/",// <-- this can link to a page for the specific file too
-  //   "image": "https://austingriffith.com/images/paintings/zebra.jpg",
-  //   "name": "Zebra",
-  //   "attributes": [
-  //      {
-  //        "trait_type": "BackgroundColor",
-  //        "value": "blue"
-  //      },
-  //      {
-  //        "trait_type": "Eyes",
-  //        "value": "googly"
-  //      },
-  //      {
-  //        "trait_type": "Stamina",
-  //        "value": 38
-  //      }
-  //   ]
-  // }
-  // console.log("Uploading zebra...")
-  // const uploadedzebra = await ipfs.add(JSON.stringify(zebra))
-
-  // console.log("Minting zebra with IPFS hash ("+uploadedzebra.path+")")
-  // await radicalManager.mint(toAddress,uploadedzebra.path,{gasLimit:400000})
-
-
-
-  // await sleep(delayMS)
+  await sleep(delayMS)
+  const item3 = {
+    "name": "Commodity",
+    "description": "Commodity (always for sale, 20% patronage)",
+    "external_url": "https://moncur.ch/",
+    "image": "https://images.squarespace-cdn.com/content/v1/575fa285e321408871d8ed19/1597737083440-CAVJ2ZOALXFS199WOX5N/ke17ZwdGBToddI8pDm48kK4_xupwe4IDhu8s-lx1OjRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZamWLI2zvYWH8K3-s_4yszcp2ryTI0HqTOaaUohrI8PIwF_HUD9RhSbNHjHj4NKGS9yV-XbTWjDUnitvaYrQZNwKMshLAGzx4R3EDFOm1kBS/IMG_20200803_204244.jpg?format=2500w",
+    "attributes": [
+       {
+         "trait_type": "artist",
+         "value": "Moncur"
+       }
+    ]
+  };
+  const item3p = {
+    "name": "20% Patronage on Commodity",
+    "description": "Pay to the bearer on demand 20%.",
+    "attributes": [
+       {
+         "trait_type": "Patronage Rate",
+         "value": "20%"
+       }
+    ]
+  }
+  console.log("Uploading item3 radical ..")
+  const i3r = await ipfs.add(JSON.stringify(item3))
+  console.log("Uploading item3 patronage...")
+  const i3p = await ipfs.add(JSON.stringify(item2p))
+  console.log("`Minting item2");
+  await radicalManager.mint(toAddress, utils.parseEther(1), 200, i3p.path, i3r.path, { gasLimit:4000000 })
 
 
   // const rhino = {
