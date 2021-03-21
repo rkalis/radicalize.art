@@ -245,7 +245,7 @@ function App(props) {
         <Button type={"primary"} onClick={()=>{
           faucetTx({
             to: address,
-            value: parseEther("0.01"),
+            value: parseEther("10"),
           });
           setFaucetClicked(true)
         }}>
@@ -296,10 +296,10 @@ function App(props) {
             <Dashboard address={address} userProvider={userProvider} />
           </Route>
           <Route path= "/marketplace" exact >
-            <Marketplace />
+            <Marketplace address={address} userProvider={userProvider} />
           </Route>
           <Route path= "/mint" exact >
-            <Mint />
+            <Mint address={address} userProvider={userProvider} />
           </Route>
             {/* <div style={{ width:640, margin: "auto", marginTop:32, paddingBottom:32 }}>
               <List

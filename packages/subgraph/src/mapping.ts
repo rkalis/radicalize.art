@@ -71,6 +71,7 @@ export function handleRadicalTokenTransfer(event: Transfer): void {
   // Update the owner and persist the token
   radicalToken.owner = owner.id
   radicalToken.save()
+  owner.save()
 }
 
 export function handlePatronageTokenTransfer(event: Transfer): void {
@@ -86,6 +87,7 @@ export function handlePatronageTokenTransfer(event: Transfer): void {
   // Update the owner and persist the token
   patronageToken.owner = owner.id
   patronageToken.save()
+  owner.save()
 }
 
 
