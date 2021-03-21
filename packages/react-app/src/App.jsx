@@ -290,10 +290,10 @@ function App(props) {
 
         <Switch>
           <Route exact path="/">
-             <Dashboard />
+             <Dashboard address={address} userProvider={userProvider} />
           </Route>
           <Route path= "/dashboard" exact >
-            <Dashboard />
+            <Dashboard address={address} userProvider={userProvider} />
           </Route>
           <Route path= "/marketplace" exact >
             <Marketplace />
