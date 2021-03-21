@@ -62,6 +62,16 @@ export default function Dashboard({ address, userProvider }) {
     });
   }
 
+  if (!address) {
+    return (
+      <div className="container">
+        <h1 style={{ marginTop: "100px" }}>
+          Please connect your Metamask wallet
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="title">PATRONAGE</div>
