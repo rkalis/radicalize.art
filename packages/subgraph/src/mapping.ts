@@ -1,5 +1,5 @@
-import { Address } from "@graphprotocol/graph-ts"
-import { Minted, PriceChanged } from "../generated/RadicalManager/RadicalManager"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Minted, PriceChanged, RentCollected, RentDeposited } from "../generated/RadicalManager/RadicalManager"
 import { Transfer } from "../generated/RadicalToken/RadicalToken"
 import { User, RadicalToken, PatronageToken } from "../generated/schema"
 
@@ -28,12 +28,23 @@ export function handleMinted(event: Minted): void {
 
   // Update patronage token
   patronageToken.owner = owner.id
+  patronageToken.totalPatronageCollected = BigInt.fromI32(0)
   patronageToken.tokenURI = event.params.patronageURI
   patronageToken.createdAt = event.block.timestamp
 
   // Persist all entities
   owner.save()
   radicalToken.save()
+  patronageToken.save()
+}
+
+export function handleRentCollected(event: RentCollected): void {
+  // Load token
+  let tokenId = event.params.tokenId.toHexString()
+  let patronageToken = PatronageToken.load(tokenId)
+
+  patronageToken.totalPatronageCollected = patronageToken.totalPatronageCollected.plus(event.params.amount)
+
   patronageToken.save()
 }
 

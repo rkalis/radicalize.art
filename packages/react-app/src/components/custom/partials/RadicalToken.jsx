@@ -1,8 +1,10 @@
 import React from "react";
+import { utils, BigNumber } from "ethers";
 import "./Partials.css";
 
 export default function RadicalToken({ tokenId, tokenURI, price, rate }) {
-  const annualPatronage = ((rate / 1000) * price).toFixed(2);
+  const annualPatronage = Number(utils.formatEther(BigNumber.from(rate).mul(price).div(1000))).toFixed(2);
+  const priceInEth = Number(utils.formatEther(price)).toFixed(2);
 
   return (
     <div className="col-md-3">
@@ -20,9 +22,9 @@ export default function RadicalToken({ tokenId, tokenURI, price, rate }) {
 
           <div>
             {/* <span className="card-body-left">14/12/2021</span> */}
-            <div className="card-body-right">Price: {price} Ξ</div>
+            <div className="card-body-right">Price: {priceInEth} Ξ</div>
             {/* TODO: Retrive this directly from the contract 'foreclosureTimestampOf' */}
-            <div className="card-body-right">Foreclosure date: xxxx-xx-xx</div>
+            <div className="card-body-right">Foreclosure timestamp: 0000</div>
           </div>
         </div>
         <img src="assets/img/testimage.png" className="card-img-bottom" alt="..." />

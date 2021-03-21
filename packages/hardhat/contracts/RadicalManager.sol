@@ -95,6 +95,16 @@ contract RadicalManager {
         return radicalToken.rentOf(tokenId);
     }
 
+    function foreclosureTimestampOf(uint256 tokenId) public view returns (uint256) {
+        uint256 rentRemaining = withdrawableRentFor(tokenId);
+        uint256 rentPerYear = radicalToken.rentOf(tokenId);
+        uint256 timeRemaining = (rentRemaining / rentPerYear) * 52 weeks;
+
+        uint256 forecloseureTimestamp = block.timestamp + timeRemaining;
+
+        return forecloseureTimestamp;
+    }
+
     // PUBLIC FUNCTIONS
 
     function mint(

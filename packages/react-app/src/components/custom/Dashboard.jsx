@@ -21,9 +21,10 @@ export default function Dashboard({ address, userProvider }) {
         patronageTokens {
           id
           tokenURI
+          totalPatronageCollected
           radicalToken {
-              price
-              rate
+            price
+            rate
           }
         }
       }
@@ -35,20 +36,26 @@ export default function Dashboard({ address, userProvider }) {
   const { user } = result.data || {};
 
   if (user) {
-    user.radicalTokens.forEach(radical => {
+    user.radicalTokens.forEach((radicalToken) => {
       radicals.push(
-        <RadicalToken tokenId={radical.id} tokenURI={radical.tokenURI} price={radical.price} rate={radical.rate} />,
+        <RadicalToken
+          tokenId={radicalToken.id}
+          tokenURI={radicalToken.tokenURI}
+          price={radicalToken.price}
+          rate={radicalToken.rate}
+        />
       );
     });
 
-    user.patronageTokens.forEach(patronage => {
-      radicals.push(
+    user.patronageTokens.forEach((patronageToken) => {
+      patronages.push(
         <PatronageToken
-          tokenId={patronage.id}
-          tokenURI={patronage.tokenURI}
-          price={patronage.radicalToken.price}
-          rate={patronage.radicalToken.rate}
-        />,
+          tokenId={patronageToken.id}
+          tokenURI={patronageToken.tokenURI}
+          price={patronageToken.radicalToken.price}
+          rate={patronageToken.radicalToken.rate}
+          totalPatronageCollected={patronageToken.totalPatronageCollected}
+        />
       );
     });
   }

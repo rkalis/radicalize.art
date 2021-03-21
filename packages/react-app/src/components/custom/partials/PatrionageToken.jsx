@@ -1,8 +1,10 @@
 import React from "react";
+import { utils, BigNumber } from "ethers";
 import "./Partials.css";
 
-export default function PatronageToken({ tokenId, tokenURI, price, rate }) {
-  const annualPatronage = ((rate / 1000) * price).toFixed(2);
+export default function PatronageToken({ tokenId, tokenURI, price, rate, totalPatronageCollected }) {
+  const annualPatronage = Number(utils.formatEther(BigNumber.from(rate).mul(price).div(1000))).toFixed(2);
+  const historicPatronage = Number(utils.formatEther(totalPatronageCollected)).toFixed(2);
 
   return (
     <div className="col-md-3">
@@ -15,7 +17,7 @@ export default function PatronageToken({ tokenId, tokenURI, price, rate }) {
           <div>
             <div className="card-body-right">Patronage/y: {annualPatronage} Ξ</div>
             {/* TODO: Add this to thegraph mapping */}
-            <div className="card-body-right">Historic patronage collected: x Ξ </div>
+            <div className="card-body-right">Historic patronage collected: {historicPatronage} Ξ </div>
             {/* TODO: Retrieve this directly from the contract 'collectableRentFor' */}
             <div className="card-body-right">Collectable patronage: x Ξ </div>
           </div>
