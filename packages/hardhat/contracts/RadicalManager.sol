@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
+// import "hardhat/console.sol";
+
 import "./PatronageToken.sol";
 import "./RadicalToken.sol";
 
@@ -83,7 +85,8 @@ contract RadicalManager {
 
     function priceOf(uint256 tokenId) public view returns (uint256) {
         uint256 withdrawableRent = withdrawableRentFor(tokenId);
-        if (withdrawableRent == 0) return 0;
+        bool sameOwner = radicalToken.ownerOf(tokenId) == patronageToken.ownerOf(tokenId);
+        if (withdrawableRent == 0 && !sameOwner) return 0;
         return radicalToken.priceOf(tokenId);
     }
 
@@ -149,7 +152,7 @@ contract RadicalManager {
     function forceBuy(uint256 tokenId, uint256 maxPrice) public payable notRadicalHolder(tokenId) {
         // User has to provide their max purchase price so they don't get sandwiched
         uint256 price = priceOf(tokenId);
-        require(price > maxPrice, "RadicalManager: token price is higher than max price");
+        require(price <= maxPrice, "RadicalManager: token price is higher than max price");
         require(msg.value >= price, "RadicalManager: did not provide enough ETH for purchase");
 
         // Do all calculations before taking any actions
@@ -158,8 +161,8 @@ contract RadicalManager {
 
         // Settle existing rent deposits
         // TODO: Make sure this isn't vulnerable to re-entrancy
-        collectRent(tokenId);
-        withdrawRent(tokenId, 2 ** 256 - 1);
+        _collectRent(tokenId);
+        _withdrawRent(tokenId, 2 ** 256 - 1);
 
         // Transfer token from previous owner to ms.sender
         radicalToken.forceTransfer(previousOwner, msg.sender, tokenId);
@@ -183,7 +186,6 @@ contract RadicalManager {
 
     function _collectRent(uint256 tokenId) internal {
         uint256 collectableRent = collectableRentFor(tokenId);
-        require(collectableRent > 0, "RadicalManager: no rent to be collected");
 
         // Sets last settlement date (TODO: could have calculation issues when collectableRent < owedRent)
         _lastRentSettlement[tokenId] = block.timestamp;
@@ -191,16 +193,13 @@ contract RadicalManager {
 
         // Transfer rent to patronage holder
         address patronageHolder = patronageToken.ownerOf(tokenId);
-        address(uint160(patronageHolder)).transfer(collectableRent);
+        if (collectableRent > 0) address(uint160(patronageHolder)).transfer(collectableRent);
 
         emit RentCollected(patronageHolder, tokenId, collectableRent);
     }
 
     function _withdrawRent(uint256 tokenId, uint256 amount) internal {
-        require(amount > 0, "RadicalManager: attempted to withdraw 0 rent");
-
         uint256 withdrawableRent = withdrawableRentFor(tokenId);
-        require(withdrawableRent > 0, "RadicalManager: not enough rent deposited");
 
         // If the requested amount > available, cap at available amount
         uint256 withdrawAmount = withdrawableRent < amount ? withdrawableRent : amount;
@@ -209,7 +208,7 @@ contract RadicalManager {
         _depositedRent[tokenId] = depositedRent.sub(withdrawAmount);
 
         address radicalHolder = radicalToken.ownerOf(tokenId);
-        address(uint160(radicalHolder)).transfer(withdrawAmount);
+        if (withdrawableRent > 0) address(uint160(radicalHolder)).transfer(withdrawAmount);
 
         emit RentWithdrawn(radicalHolder, tokenId, withdrawAmount);
     }

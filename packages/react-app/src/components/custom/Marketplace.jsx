@@ -1,40 +1,45 @@
 import React from 'react';
-import RadicalTokenMarket from './partials/RadicalTokenMarket'
+import { useQuery, gql } from "@apollo/client";
+import RadicalTokenListing from './partials/RadicalTokenListing'
 import PatrionageTokenMarket from './partials/PatrionageTokenMarket'
+import CardGroup from "react-bootstrap/CardGroup"
 
-export default function Marketplace() {
-   const radicals = [];
-   const patrionages = [];
-
-   for(let i=0;i<8;i++){
-       radicals.push(<RadicalTokenMarket/>)
-   }
-   for(let i=0;i<8;i++){
-       patrionages.push(<PatrionageTokenMarket/>)
-   }
-
-   return (
-
-    <div className="container">
-
-
-       <div className="title" >ALWAYS ON SALE</div>
-
-       <hr className="horizontal-line"/>
-        <div className="row">
-
-           {patrionages}
-
-        </div>
-       <div className="title">RECENT SALES</div>
-       <hr className="horizontal-line" />
-       <div className="row">
-           {radicals}
-
-     </div>
-    </div>
-
-
-     );
-
+export default function Marketplace({ address, userProvider }) {
+  const query = `
+    {
+      radicalTokens(limit: 25 orderBy: createdAt orderDirection: desc) {
+        id
+        tokenURI
+        price
+        rate
+        owner {
+          id
+        }
+      }
     }
+  `;
+
+  const graphQuery = gql(query);
+  const result = useQuery(graphQuery, { pollInterval: 2500 });
+  const { radicalTokens } = result.data || { radicalTokens: [] };
+
+  const listings = radicalTokens.map(token => (
+    <RadicalTokenListing
+      tokenId={token.id}
+      tokenURI={token.tokenURI}
+      price={token.price}
+      rate={token.rate}
+      owner={token.owner.id}
+      userProvider={userProvider}
+    />
+  ));
+
+  return (
+    <div className="container">
+      <div className="title">MARKETPLACE</div>
+      <hr className="horizontal-line" />
+
+      <CardGroup>{listings}</CardGroup>
+    </div>
+  );
+}
